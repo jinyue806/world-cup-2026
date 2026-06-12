@@ -2,6 +2,7 @@ import { ensureDataDir, readMatches, readBets, writeBets, readPredictions, write
 import { settleAllBets } from '../lib/settler';
 import { teamZhName } from '../lib/parser';
 import { loadConfig, saveConfig } from './helpers';
+import { detectStreakNotifications, formatStreakNotifications } from '../lib/streakDetector';
 import fs from 'fs';
 import path from 'path';
 
@@ -161,4 +162,11 @@ export function cmdCheckAndNotify() {
     console.log(`  ${emoji} ${s.match} | ${s.bet} @${s.odds} × ${s.stake} → ${s.result} ${s.profit}`);
   }
   console.log(`\n📄 通知已写入: ${notifyPath}`);
+
+  // 检测连胜/连败通知
+  const allBets = result.changedCount > 0 ? result.updatedBets : bets;
+  const streakNotifications = detectStreakNotifications(allBets);
+  if (streakNotifications.length > 0) {
+    console.log(formatStreakNotifications(streakNotifications));
+  }
 }

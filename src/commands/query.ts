@@ -5,9 +5,16 @@ import { teamZhName } from '../lib/parser';
 import { fetchStandings } from '../lib/worldcupApi';
 import { loadConfig } from './helpers';
 
-export function cmdQuery() {
-  const bets = readBets();
+export function cmdQuery(args: Record<string, string> = {}) {
+  let bets = readBets();
   const config = loadConfig();
+  
+  // 按投注人筛选
+  const bettorFilter = args.bettor;
+  if (bettorFilter) {
+    bets = bets.filter(b => b.bettorId === bettorFilter);
+  }
+  
   const account = calcAccount(bets, config.initialDeposit);
 
   const settledBets = bets.filter(b => b.status !== 'pending');
@@ -35,10 +42,14 @@ export function cmdListBets(args: Record<string, string>) {
   const bets = readBets();
   const matches = readMatches();
   const statusFilter = args.status;
+  const bettorFilter = args.bettor;
 
   let filtered = bets;
   if (statusFilter) {
-    filtered = bets.filter(b => b.status === statusFilter);
+    filtered = filtered.filter(b => b.status === statusFilter);
+  }
+  if (bettorFilter) {
+    filtered = filtered.filter(b => b.bettorId === bettorFilter);
   }
 
   if (filtered.length === 0) {

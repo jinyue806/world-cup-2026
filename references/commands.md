@@ -48,6 +48,12 @@
 
 | 命令 | 参数 | 说明 |
 |:-----|:-----|:-----|
+| `odds` | `[--detail] [--match <id>] [--team <队名>]` | 查看实时赔率 |
+| `analytics` | `[--days <天数>] [--type <玩法>]` | 数据分析报告 |
+| `sentiment` | `[--team <队名>]` | 社交媒体情绪分析 |
+| `recommend` | `[--team <队名>]` | AI 投注推荐 |
+| `streaks` | `[--notify]` | 连胜/连败统计 |
+| `export` | `[--format csv\|json] [--bettor <名字>] [--status <状态>]` | 导出报表 |
 | `fetch-standings` | — | 从 API 获取最新积分榜 |
 | `import-bets` | `--text <文本>` / `--file <path>` | 批量导入下注记录 |
 | `check-and-notify` | — | 检查比赛结果+结算+生成通知 |

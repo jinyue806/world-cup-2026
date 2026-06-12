@@ -6,6 +6,12 @@ import { cmdQuery, cmdListBets, cmdStandings, cmdFetchStandings } from './comman
 import { cmdBracket, cmdPredictions, cmdSetGroupStandings, cmdSetBracket } from './commands/bracket';
 import { cmdInit, cmdSettle, cmdDeposit, cmdReset, cmdCheckAndNotify } from './commands/admin';
 import { cmdHot } from './commands/hot';
+import { cmdOdds } from './commands/odds';
+import { cmdAnalytics } from './commands/analytics';
+import { cmdSentiment } from './commands/sentiment';
+import { cmdRecommend } from './commands/recommend';
+import { cmdStreaks } from './commands/streaks';
+import { cmdExport } from './commands/export';
 
 function cmdHelp() {
   console.log(`
@@ -23,6 +29,7 @@ function cmdHelp() {
     --stake <金额>                        下注金额
     --handicap <让球值>                   让球玩法必需
     --threshold <阈值>                    大小球玩法必需
+    --bettor <名字>                       投注人（多用户时使用）
     --notes <备注>                        可选备注
 
   update-match                            更新比赛比分
@@ -37,8 +44,10 @@ function cmdHelp() {
     --status <finished|scheduled>         按状态筛选
 
   query                                   查看盈亏统计
+    --bettor <名字>                       按投注人筛选
   list-bets                               列出注单
     --status <pending|won|lost|void>      按状态筛选
+    --bettor <名字>                       按投注人筛选
   list-matches                            列出比赛
     --group <Group A>                     按分组筛选
     --status <finished|scheduled>         按状态筛选
@@ -51,6 +60,24 @@ function cmdHelp() {
     --group <Group A>                     分组名
 
   ── 工具 ──
+  odds                                    查看实时赔率
+    --detail                               显示详细赔率（含所有盘口）
+    --match <matchId>                      显示指定比赛的详细赔率
+    --team <队名>                          按队名筛选比赛
+  analytics                               数据分析报告
+    --days <天数>                          最近 N 天
+    --type <玩法>                          按玩法筛选 (1X2/handicap/over_under/correct_score)
+  sentiment                               社交媒体情绪分析
+    --team <队名>                          显示指定球队的情绪
+  recommend                               AI 投注推荐
+    --team <队名>                          显示指定球队相关推荐
+  streaks                                 连胜/连败统计
+    --notify                              显示需要通知的连胜/连败
+  export                                  导出报表
+    --format <csv|json>                   导出格式（默认 json）
+    --bettor <名字>                       按投注人筛选
+    --status <won|lost|pending>           按状态筛选
+    --output <path>                       指定输出文件路径
   fetch-standings                         从 API 获取最新积分榜
   hot                                     查看热搜（自动从注单提取关键词）
     --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao
@@ -109,7 +136,7 @@ function execCommand(command: string | undefined, named: Record<string, string>,
       cmdStatus(named);
       break;
     case 'query':
-      cmdQuery();
+      cmdQuery(named);
       break;
     case 'list-bets':
       cmdListBets(named);
@@ -152,6 +179,24 @@ function execCommand(command: string | undefined, named: Record<string, string>,
       break;
     case 'check-and-notify':
       cmdCheckAndNotify();
+      break;
+    case 'odds':
+      cmdOdds(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
+      break;
+    case 'analytics':
+      cmdAnalytics(named);
+      break;
+    case 'sentiment':
+      cmdSentiment(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
+      break;
+    case 'recommend':
+      cmdRecommend(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
+      break;
+    case 'streaks':
+      cmdStreaks(named);
+      break;
+    case 'export':
+      cmdExport(named);
       break;
     case 'help':
     case undefined:

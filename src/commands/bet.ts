@@ -12,11 +12,12 @@ export function cmdAddBet(args: Record<string, string>) {
   let selection = args.selection;
   const odds = parseFloat(args.odds);
   const stake = parseFloat(args.stake);
+  const bettorId = args.bettor || undefined;
 
   if (!betType || !selection || isNaN(odds) || isNaN(stake)) {
-    console.error('❌ 用法: add-bet --match <matchId> --type <1X2|handicap|over_under|correct_score|custom> --selection <选项> --odds <赔率> --stake <金额>');
+    console.error('❌ 用法: add-bet --match <matchId> --type <1X2|handicap|over_under|correct_score|custom> --selection <选项> --odds <赔率> --stake <金额> [--bettor <名字>]');
     console.error('   示例: add-bet --match match_1 --type 1X2 --selection France --odds 1.8 --stake 100');
-    console.error('   或:   add-bet --match "韩国 vs 捷克" --type 1X2 --selection 韩国 --odds 2.5 --stake 100');
+    console.error('   或:   add-bet --match "韩国 vs 捷克" --type 1X2 --selection 韩国 --odds 2.5 --stake 100 --bettor 小明');
     process.exit(1);
   }
 
@@ -88,6 +89,7 @@ export function cmdAddBet(args: Record<string, string>) {
     stake,
     status: 'pending',
     createdAt: new Date().toISOString(),
+    bettorId,
     metadata: Object.keys(metadata).length > 0 ? metadata : undefined,
   };
 
