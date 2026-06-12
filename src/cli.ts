@@ -12,6 +12,8 @@ import { cmdSentiment } from './commands/sentiment';
 import { cmdRecommend } from './commands/recommend';
 import { cmdStreaks } from './commands/streaks';
 import { cmdExport } from './commands/export';
+import { cmdBacktest } from './commands/backtest';
+import { cmdElo } from './commands/elo';
 
 function cmdHelp() {
   console.log(`
@@ -78,6 +80,14 @@ function cmdHelp() {
     --bettor <名字>                       按投注人筛选
     --status <won|lost|pending>           按状态筛选
     --output <path>                       指定输出文件路径
+  backtest                               回测历史数据
+    --worldcup                           回测世界杯数据
+    --year <年份>                         回测指定年份 (2018/2022)
+    --strategy <策略名>                   回测指定策略
+    --list                               列出所有策略
+  elo                                    ELO 排名查询
+    --match <主队> vs <客队>             分析比赛并显示估算赔率
+    --team <队名>                        显示指定球队排名
   fetch-standings                         从 API 获取最新积分榜
   hot                                     查看热搜（自动从注单提取关键词）
     --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao
@@ -197,6 +207,12 @@ function execCommand(command: string | undefined, named: Record<string, string>,
       break;
     case 'export':
       cmdExport(named);
+      break;
+    case 'backtest':
+      cmdBacktest(named);
+      break;
+    case 'elo':
+      cmdElo(named);
       break;
     case 'help':
     case undefined:

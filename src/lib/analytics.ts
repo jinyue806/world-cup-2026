@@ -260,7 +260,7 @@ export function printAnalytics(summary: AnalyticsSummary): void {
   console.log(`\n💰 总览`);
   console.log(`   总注数: ${summary.totalBets} | 已结算: ${summary.totalBets - summary.byDay.reduce((s, d) => s + d.pending, 0)}`);
   console.log(`   总投入: ${summary.totalStake} | 总回报: ${summary.totalReturn.toFixed(2)}`);
-  console.log(`   净收益: ${formatProfit(summary.totalProfit)} | ROI: ${formatRoi(summary.overallRoi)}`);
+  console.log(`   净收益: ${formatProfit(summary.totalProfit)} | 收益率: ${formatRoi(summary.overallRoi)}`);
   console.log(`   胜率: ${summary.winRate.toFixed(1)}%`);
 
   // 连胜/连败
@@ -282,7 +282,7 @@ export function printAnalytics(summary: AnalyticsSummary): void {
   // 按类型统计
   if (summary.byType.length > 0) {
     console.log(`\n📈 按玩法统计`);
-    console.log(`   ${'玩法'.padEnd(12)} ${'注数'.padEnd(6)} ${'胜率'.padEnd(8)} ${'投入'.padEnd(8)} ${'收益'.padEnd(10)} ${'ROI'.padEnd(8)}`);
+    console.log(`   ${'玩法'.padEnd(12)} ${'注数'.padEnd(6)} ${'胜率'.padEnd(8)} ${'投入'.padEnd(8)} ${'收益'.padEnd(10)} ${'收益率'.padEnd(8)}`);
     console.log(`   ${'─'.repeat(52)}`);
     for (const t of summary.byType) {
       console.log(
@@ -295,7 +295,7 @@ export function printAnalytics(summary: AnalyticsSummary): void {
   const recentDays = summary.byDay.slice(-7);
   if (recentDays.length > 0) {
     console.log(`\n📅 每日趋势 (最近 ${recentDays.length} 天)`);
-    console.log(`   ${'日期'.padEnd(12)} ${'注数'.padEnd(6)} ${'胜/负'.padEnd(8)} ${'投入'.padEnd(8)} ${'收益'.padEnd(10)} ${'ROI'.padEnd(8)}`);
+    console.log(`   ${'日期'.padEnd(12)} ${'注数'.padEnd(6)} ${'胜/负'.padEnd(8)} ${'投入'.padEnd(8)} ${'收益'.padEnd(10)} ${'收益率'.padEnd(8)}`);
     console.log(`   ${'─'.repeat(52)}`);
     for (const d of recentDays) {
       console.log(

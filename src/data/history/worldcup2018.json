@@ -1,0 +1,83 @@
+{
+  "year": 2018,
+  "name": "2018 FIFA World Cup",
+  "location": "Russia",
+  "matches": [
+    {"id": "r2018_001", "group": "Group A", "teamA": "Russia", "teamB": "Saudi Arabia", "scoreA": 5, "scoreB": 0, "date": "2018-06-14T18:00:00Z", "status": "finished", "odds": {"home": 1.30, "draw": 5.00, "away": 11.00}},
+    {"id": "r2018_002", "group": "Group A", "teamA": "Uruguay", "teamB": "Egypt", "scoreA": 1, "scoreB": 0, "date": "2018-06-15T15:00:00Z", "status": "finished", "odds": {"home": 1.55, "draw": 3.80, "away": 6.00}},
+    {"id": "r2018_003", "group": "Group A", "teamA": "Russia", "teamB": "Egypt", "scoreA": 3, "scoreB": 1, "date": "2018-06-19T17:00:00Z", "status": "finished", "odds": {"home": 1.45, "draw": 4.20, "away": 7.00}},
+    {"id": "r2018_004", "group": "Group A", "teamA": "Uruguay", "teamB": "Saudi Arabia", "scoreA": 1, "scoreB": 0, "date": "2018-06-20T17:00:00Z", "status": "finished", "odds": {"home": 1.35, "draw": 4.80, "away": 9.00}},
+    {"id": "r2018_005", "group": "Group A", "teamA": "Uruguay", "teamB": "Russia", "scoreA": 3, "scoreB": 0, "date": "2018-06-25T15:00:00Z", "status": "finished", "odds": {"home": 2.00, "draw": 3.30, "away": 3.60}},
+    {"id": "r2018_006", "group": "Group A", "teamA": "Saudi Arabia", "teamB": "Egypt", "scoreA": 2, "scoreB": 1, "date": "2018-06-25T15:00:00Z", "status": "finished", "odds": {"home": 2.80, "draw": 3.20, "away": 2.60}},
+    
+    {"id": "r2018_007", "group": "Group B", "teamA": "Portugal", "teamB": "Spain", "scoreA": 3, "scoreB": 3, "date": "2018-06-15T18:00:00Z", "status": "finished", "odds": {"home": 2.90, "draw": 3.10, "away": 2.50}},
+    {"id": "r2018_008", "group": "Group B", "teamA": "Morocco", "teamB": "Iran", "scoreA": 0, "scoreB": 1, "date": "2018-06-15T15:00:00Z", "status": "finished", "odds": {"home": 1.80, "draw": 3.40, "away": 4.50}},
+    {"id": "r2018_009", "group": "Group B", "teamA": "Portugal", "teamB": "Iran", "scoreA": 1, "scoreB": 1, "date": "2018-06-20T14:00:00Z", "status": "finished", "odds": {"home": 1.40, "draw": 4.50, "away": 8.00}},
+    {"id": "r2018_010", "group": "Group B", "teamA": "Spain", "teamB": "Iran", "scoreA": 1, "scoreB": 0, "date": "2018-06-20T20:00:00Z", "status": "finished", "odds": {"home": 1.25, "draw": 5.50, "away": 12.00}},
+    {"id": "r2018_011", "group": "Group B", "teamA": "Spain", "teamB": "Morocco", "scoreA": 2, "scoreB": 2, "date": "2018-06-25T19:00:00Z", "status": "finished", "odds": {"home": 1.30, "draw": 5.00, "away": 10.00}},
+    {"id": "r2018_012", "group": "Group B", "teamA": "Iran", "teamB": "Portugal", "scoreA": 1, "scoreB": 1, "date": "2018-06-25T19:00:00Z", "status": "finished", "odds": {"home": 6.00, "draw": 3.80, "away": 1.55}},
+    
+    {"id": "r2018_013", "group": "Group C", "teamA": "France", "teamB": "Australia", "scoreA": 2, "scoreB": 1, "date": "2018-06-16T12:00:00Z", "status": "finished", "odds": {"home": 1.30, "draw": 5.00, "away": 10.00}},
+    {"id": "r2018_014", "group": "Group C", "teamA": "Peru", "teamB": "Denmark", "scoreA": 0, "scoreB": 1, "date": "2018-06-16T15:00:00Z", "status": "finished", "odds": {"home": 2.80, "draw": 3.10, "away": 2.60}},
+    {"id": "r2018_015", "group": "Group C", "teamA": "France", "teamB": "Peru", "scoreA": 1, "scoreB": 0, "date": "2018-06-21T17:00:00Z", "status": "finished", "odds": {"home": 1.45, "draw": 4.20, "away": 7.00}},
+    {"id": "r2018_016", "group": "Group C", "teamA": "Denmark", "teamB": "Australia", "scoreA": 1, "scoreB": 1, "date": "2018-06-21T20:00:00Z", "status": "finished", "odds": {"home": 1.70, "draw": 3.50, "away": 4.80}},
+    {"id": "r2018_017", "group": "Group C", "teamA": "Denmark", "teamB": "France", "scoreA": 0, "scoreB": 0, "date": "2018-06-26T15:00:00Z", "status": "finished", "odds": {"home": 3.50, "draw": 3.20, "away": 2.10}},
+    {"id": "r2018_018", "group": "Group C", "teamA": "Australia", "teamB": "Peru", "scoreA": 0, "scoreB": 2, "date": "2018-06-26T15:00:00Z", "status": "finished", "odds": {"home": 3.00, "draw": 3.20, "away": 2.40}},
+    
+    {"id": "r2018_019", "group": "Group D", "teamA": "Argentina", "teamB": "Iceland", "scoreA": 1, "scoreB": 1, "date": "2018-06-16T15:00:00Z", "status": "finished", "odds": {"home": 1.30, "draw": 5.00, "away": 10.00}},
+    {"id": "r2018_020", "group": "Group D", "teamA": "Croatia", "teamB": "Nigeria", "scoreA": 2, "scoreB": 0, "date": "2018-06-16T18:00:00Z", "status": "finished", "odds": {"home": 1.65, "draw": 3.60, "away": 5.00}},
+    {"id": "r2018_021", "group": "Group D", "teamA": "Argentina", "teamB": "Croatia", "scoreA": 0, "scoreB": 3, "date": "2018-06-21T20:00:00Z", "status": "finished", "odds": {"home": 1.70, "draw": 3.50, "away": 4.80}},
+    {"id": "r2018_022", "group": "Group D", "teamA": "Nigeria", "teamB": "Iceland", "scoreA": 2, "scoreB": 0, "date": "2018-06-22T17:00:00Z", "status": "finished", "odds": {"home": 2.20, "draw": 3.10, "away": 3.30}},
+    {"id": "r2018_023", "group": "Group D", "teamA": "Nigeria", "teamB": "Argentina", "scoreA": 1, "scoreB": 2, "date": "2018-06-26T19:00:00Z", "status": "finished", "odds": {"home": 5.00, "draw": 3.80, "away": 1.65}},
+    {"id": "r2018_024", "group": "Group D", "teamA": "Iceland", "teamB": "Croatia", "scoreA": 1, "scoreB": 2, "date": "2018-06-26T19:00:00Z", "status": "finished", "odds": {"home": 5.50, "draw": 3.80, "away": 1.60}},
+    
+    {"id": "r2018_025", "group": "Group E", "teamA": "Brazil", "teamB": "Switzerland", "scoreA": 1, "scoreB": 1, "date": "2018-06-17T20:00:00Z", "status": "finished", "odds": {"home": 1.35, "draw": 4.80, "away": 9.00}},
+    {"id": "r2018_026", "group": "Group E", "teamA": "Costa Rica", "teamB": "Serbia", "scoreA": 0, "scoreB": 1, "date": "2018-06-17T13:00:00Z", "status": "finished", "odds": {"home": 3.80, "draw": 3.20, "away": 2.00}},
+    {"id": "r2018_027", "group": "Group E", "teamA": "Brazil", "teamB": "Costa Rica", "scoreA": 2, "scoreB": 0, "date": "2018-06-22T14:00:00Z", "status": "finished", "odds": {"home": 1.20, "draw": 6.50, "away": 15.00}},
+    {"id": "r2018_028", "group": "Group E", "teamA": "Serbia", "teamB": "Switzerland", "scoreA": 1, "scoreB": 2, "date": "2018-06-22T20:00:00Z", "status": "finished", "odds": {"home": 2.40, "draw": 3.10, "away": 3.00}},
+    {"id": "r2018_029", "group": "Group E", "teamA": "Serbia", "teamB": "Brazil", "scoreA": 0, "scoreB": 2, "date": "2018-06-27T20:00:00Z", "status": "finished", "odds": {"home": 5.50, "draw": 3.80, "away": 1.60}},
+    {"id": "r2018_030", "group": "Group E", "teamA": "Switzerland", "teamB": "Costa Rica", "scoreA": 2, "scoreB": 2, "date": "2018-06-27T20:00:00Z", "status": "finished", "odds": {"home": 1.50, "draw": 4.00, "away": 6.50}},
+    
+    {"id": "r2018_031", "group": "Group F", "teamA": "Germany", "teamB": "Mexico", "scoreA": 0, "scoreB": 1, "date": "2018-06-17T17:00:00Z", "status": "finished", "odds": {"home": 1.20, "draw": 6.50, "away": 15.00}},
+    {"id": "r2018_032", "group": "Group F", "teamA": "Sweden", "teamB": "South Korea", "scoreA": 1, "scoreB": 0, "date": "2018-06-18T14:00:00Z", "status": "finished", "odds": {"home": 1.65, "draw": 3.60, "away": 5.00}},
+    {"id": "r2018_033", "group": "Group F", "teamA": "South Korea", "teamB": "Mexico", "scoreA": 1, "scoreB": 2, "date": "2018-06-23T17:00:00Z", "status": "finished", "odds": {"home": 3.50, "draw": 3.20, "away": 2.10}},
+    {"id": "r2018_034", "group": "Group F", "teamA": "Germany", "teamB": "Sweden", "scoreA": 2, "scoreB": 1, "date": "2018-06-23T20:00:00Z", "status": "finished", "odds": {"home": 1.40, "draw": 4.50, "away": 8.00}},
+    {"id": "r2018_035", "group": "Group F", "teamA": "South Korea", "teamB": "Germany", "scoreA": 2, "scoreB": 0, "date": "2018-06-27T16:00:00Z", "status": "finished", "odds": {"home": 12.00, "draw": 5.50, "away": 1.20}},
+    {"id": "r2018_036", "group": "Group F", "teamA": "Mexico", "teamB": "Sweden", "scoreA": 0, "scoreB": 3, "date": "2018-06-27T16:00:00Z", "status": "finished", "odds": {"home": 2.10, "draw": 3.30, "away": 3.50}},
+    
+    {"id": "r2018_037", "group": "Group G", "teamA": "Belgium", "teamB": "Panama", "scoreA": 3, "scoreB": 0, "date": "2018-06-18T17:00:00Z", "status": "finished", "odds": {"home": 1.15, "draw": 7.00, "away": 19.00}},
+    {"id": "r2018_038", "group": "Group G", "teamA": "Tunisia", "teamB": "England", "scoreA": 1, "scoreB": 2, "date": "2018-06-18T20:00:00Z", "status": "finished", "odds": {"home": 5.50, "draw": 3.80, "away": 1.60}},
+    {"id": "r2018_039", "group": "Group G", "teamA": "Belgium", "teamB": "Tunisia", "scoreA": 5, "scoreB": 2, "date": "2018-06-23T14:00:00Z", "status": "finished", "odds": {"home": 1.25, "draw": 5.50, "away": 12.00}},
+    {"id": "r2018_040", "group": "Group G", "teamA": "England", "teamB": "Panama", "scoreA": 6, "scoreB": 1, "date": "2018-06-24T14:00:00Z", "status": "finished", "odds": {"home": 1.20, "draw": 6.50, "away": 15.00}},
+    {"id": "r2018_041", "group": "Group G", "teamA": "England", "teamB": "Belgium", "scoreA": 0, "scoreB": 1, "date": "2018-06-28T19:00:00Z", "status": "finished", "odds": {"home": 2.30, "draw": 3.10, "away": 3.10}},
+    {"id": "r2018_042", "group": "Group G", "teamA": "Panama", "teamB": "Tunisia", "scoreA": 1, "scoreB": 2, "date": "2018-06-28T19:00:00Z", "status": "finished", "odds": {"home": 3.50, "draw": 3.20, "away": 2.10}},
+    
+    {"id": "r2018_043", "group": "Group H", "teamA": "Colombia", "teamB": "Japan", "scoreA": 1, "scoreB": 2, "date": "2018-06-19T14:00:00Z", "status": "finished", "odds": {"home": 1.55, "draw": 3.80, "away": 6.00}},
+    {"id": "r2018_044", "group": "Group H", "teamA": "Poland", "teamB": "Senegal", "scoreA": 1, "scoreB": 2, "date": "2018-06-19T17:00:00Z", "status": "finished", "odds": {"home": 1.85, "draw": 3.40, "away": 4.20}},
+    {"id": "r2018_045", "group": "Group H", "teamA": "Japan", "teamB": "Senegal", "scoreA": 2, "scoreB": 2, "date": "2018-06-24T17:00:00Z", "status": "finished", "odds": {"home": 2.80, "draw": 3.10, "away": 2.60}},
+    {"id": "r2018_046", "group": "Group H", "teamA": "Poland", "teamB": "Colombia", "scoreA": 0, "scoreB": 3, "date": "2018-06-24T20:00:00Z", "status": "finished", "odds": {"home": 2.50, "draw": 3.20, "away": 2.80}},
+    {"id": "r2018_047", "group": "Group H", "teamA": "Japan", "teamB": "Poland", "scoreA": 0, "scoreB": 1, "date": "2018-06-28T15:00:00Z", "status": "finished", "odds": {"home": 2.20, "draw": 3.10, "away": 3.30}},
+    {"id": "r2018_048", "group": "Group H", "teamA": "Senegal", "teamB": "Colombia", "scoreA": 0, "scoreB": 1, "date": "2018-06-28T15:00:00Z", "status": "finished", "odds": {"home": 3.00, "draw": 3.20, "away": 2.40}},
+    
+    {"id": "r2018_049", "round": "Round of 16", "teamA": "France", "teamB": "Argentina", "scoreA": 4, "scoreB": 3, "date": "2018-06-30T17:00:00Z", "status": "finished", "odds": {"home": 2.00, "draw": 3.30, "away": 3.60}},
+    {"id": "r2018_050", "round": "Round of 16", "teamA": "Uruguay", "teamB": "Portugal", "scoreA": 2, "scoreB": 1, "date": "2018-06-30T20:00:00Z", "status": "finished", "odds": {"home": 2.80, "draw": 3.10, "away": 2.60}},
+    {"id": "r2018_051", "round": "Round of 16", "teamA": "Spain", "teamB": "Russia", "scoreA": 1, "scoreB": 1, "date": "2018-07-01T17:00:00Z", "status": "finished", "odds": {"home": 1.30, "draw": 5.00, "away": 10.00}, "penalties": {"winner": "Russia", "score": "3-4"}},
+    {"id": "r2018_052", "round": "Round of 16", "teamA": "Croatia", "teamB": "Denmark", "scoreA": 1, "scoreB": 1, "date": "2018-07-01T20:00:00Z", "status": "finished", "odds": {"home": 2.10, "draw": 3.30, "away": 3.50}, "penalties": {"winner": "Croatia", "score": "3-2"}},
+    {"id": "r2018_053", "round": "Round of 16", "teamA": "Brazil", "teamB": "Mexico", "scoreA": 2, "scoreB": 0, "date": "2018-07-02T17:00:00Z", "status": "finished", "odds": {"home": 1.35, "draw": 4.80, "away": 9.00}},
+    {"id": "r2018_054", "round": "Round of 16", "teamA": "Belgium", "teamB": "Japan", "scoreA": 3, "scoreB": 2, "date": "2018-07-02T20:00:00Z", "status": "finished", "odds": {"home": 1.40, "draw": 4.50, "away": 8.00}},
+    {"id": "r2018_055", "round": "Round of 16", "teamA": "Sweden", "teamB": "Switzerland", "scoreA": 1, "scoreB": 0, "date": "2018-07-03T17:00:00Z", "status": "finished", "odds": {"home": 2.50, "draw": 3.10, "away": 2.80}},
+    {"id": "r2018_056", "round": "Round of 16", "teamA": "Colombia", "teamB": "England", "scoreA": 1, "scoreB": 1, "date": "2018-07-03T20:00:00Z", "status": "finished", "odds": {"home": 2.60, "draw": 3.10, "away": 2.70}, "penalties": {"winner": "England", "score": "3-4"}},
+    
+    {"id": "r2018_057", "round": "Quarter-final", "teamA": "Uruguay", "teamB": "France", "scoreA": 0, "scoreB": 2, "date": "2018-07-06T17:00:00Z", "status": "finished", "odds": {"home": 3.00, "draw": 3.10, "away": 2.40}},
+    {"id": "r2018_058", "round": "Quarter-final", "teamA": "Brazil", "teamB": "Belgium", "scoreA": 1, "scoreB": 2, "date": "2018-07-06T20:00:00Z", "status": "finished", "odds": {"home": 2.00, "draw": 3.30, "away": 3.60}},
+    {"id": "r2018_059", "round": "Quarter-final", "teamA": "Russia", "teamB": "Croatia", "scoreA": 2, "scoreB": 2, "date": "2018-07-07T17:00:00Z", "status": "finished", "odds": {"home": 3.20, "draw": 3.10, "away": 2.20}, "penalties": {"winner": "Croatia", "score": "3-4"}},
+    {"id": "r2018_060", "round": "Quarter-final", "teamA": "Sweden", "teamB": "England", "scoreA": 0, "scoreB": 2, "date": "2018-07-07T20:00:00Z", "status": "finished", "odds": {"home": 3.50, "draw": 3.20, "away": 2.10}},
+    
+    {"id": "r2018_061", "round": "Semi-final", "teamA": "France", "teamB": "Belgium", "scoreA": 1, "scoreB": 0, "date": "2018-07-10T20:00:00Z", "status": "finished", "odds": {"home": 2.20, "draw": 3.10, "away": 3.30}},
+    {"id": "r2018_062", "round": "Semi-final", "teamA": "Croatia", "teamB": "England", "scoreA": 2, "scoreB": 1, "date": "2018-07-11T20:00:00Z", "status": "finished", "odds": {"home": 2.80, "draw": 3.10, "away": 2.60}},
+    
+    {"id": "r2018_063", "round": "Third place", "teamA": "Belgium", "teamB": "England", "scoreA": 2, "scoreB": 0, "date": "2018-07-14T15:00:00Z", "status": "finished", "odds": {"home": 2.10, "draw": 3.30, "away": 3.50}},
+    
+    {"id": "r2018_064", "round": "Final", "teamA": "France", "teamB": "Croatia", "scoreA": 4, "scoreB": 2, "date": "2018-07-15T18:00:00Z", "status": "finished", "odds": {"home": 1.65, "draw": 3.60, "away": 5.00}}
+  ]
+}

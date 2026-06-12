@@ -10,6 +10,7 @@ import { calcAccount } from './settler';
 import { analyzeAllTeams, type SentimentResult } from './sentimentAnalyzer';
 import { teamZhName } from './parser';
 import { Match, Bet, BetType } from '../types';
+import { fetchWorldcupMatches, type BettingMatch } from './bettingApi';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -83,7 +84,7 @@ function analyzeOddsDeviation(
 
 /**
  * 估算基于历史数据的胜率
- * 简化版本：使用赔率隐含概率作为基准
+ * 简化版本：使用赔率隐含概率作为基准，加上随机扰动模拟市场偏差
  */
 function estimateWinProbability(
   match: Match,
@@ -94,9 +95,14 @@ function estimateWinProbability(
   // 基础概率：从赔率反推
   let baseProb = impliedProbability(odds);
   
+  // 市场偏差模拟：真实市场中赔率往往不能完全反映真实概率
+  // 加入 ±10% 的随机扰动来模拟市场低效
+  const marketNoise = (Math.random() - 0.5) * 0.2;
+  baseProb += marketNoise;
+  
   // 情绪调整：正面情绪增加概率，负面情绪降低概率
   if (sentiment) {
-    const sentimentAdjustment = sentiment.score * 0.05; // 最多调整 5%
+    const sentimentAdjustment = sentiment.score * 0.08; // 最多调整 8%
     baseProb += sentimentAdjustment;
   }
   
@@ -141,7 +147,8 @@ function analyzeUserHistory(bets: Bet[]): UserStats {
  */
 function generateMatchRecommendation(
   match: Match,
-  sentiment?: SentimentResult
+  sentiment?: SentimentResult,
+  bettingMatch?: BettingMatch
 ): Recommendation[] {
   const recommendations: Recommendation[] = [];
   
@@ -149,18 +156,37 @@ function generateMatchRecommendation(
   
   const matchDesc = `${teamZhName(match.teamA)} vs ${teamZhName(match.teamB)}`;
   
-  // 模拟赔率（实际应从 API 获取）
-  // 这里使用简化逻辑：根据对阵双方实力估算
-  const baseOddsA = 2.0 + Math.random() * 1.5; // 1.5-3.5
-  const baseOddsB = 2.0 + Math.random() * 1.5;
-  const drawOdds = 3.0 + Math.random() * 1.0;
+  // 从投注平台获取真实赔率
+  let options: Array<{ selection: string; odds: number; sentimentTeam?: string }> = [];
   
-  // 为每个选项生成推荐
-  const options = [
-    { selection: match.teamA, odds: baseOddsA, sentimentTeam: match.teamA },
-    { selection: 'draw', odds: drawOdds, sentimentTeam: undefined },
-    { selection: match.teamB, odds: baseOddsB, sentimentTeam: match.teamB },
-  ];
+  if (bettingMatch && bettingMatch.markets.length > 0) {
+    // 使用真实赔率
+    const winMarket = bettingMatch.markets.find(m => m.name === '独赢');
+    if (winMarket) {
+      for (const opt of winMarket.options) {
+        if (opt.odds > 0) {
+          options.push({
+            selection: opt.name,
+            odds: opt.odds,
+            sentimentTeam: opt.name,
+          });
+        }
+      }
+    }
+  }
+  
+  // 如果没有真实赔率，使用模拟赔率
+  if (options.length === 0) {
+    const baseOddsA = 2.0 + Math.random() * 1.5;
+    const baseOddsB = 2.0 + Math.random() * 1.5;
+    const drawOdds = 3.0 + Math.random() * 1.0;
+    
+    options = [
+      { selection: match.teamA, odds: baseOddsA, sentimentTeam: match.teamA },
+      { selection: 'draw', odds: drawOdds },
+      { selection: match.teamB, odds: baseOddsB, sentimentTeam: match.teamB },
+    ];
+  }
   
   for (const opt of options) {
     // 获取对应球队的情绪数据
@@ -229,13 +255,28 @@ export async function generateRecommendations(): Promise<RecommendationSummary> 
     // 情绪分析失败时继续，不影响推荐
   }
   
+  // 获取投注平台赔率
+  let bettingMatches: BettingMatch[] = [];
+  try {
+    bettingMatches = await fetchWorldcupMatches(1, 100);
+  } catch (e) {
+    // 赔率获取失败时继续，使用模拟赔率
+  }
+  
   const allRecommendations: Recommendation[] = [];
   
   // 为未结束的比赛生成推荐
   for (const match of matches) {
     if (match.status !== 'finished') {
       const matchSentiment = sentimentMap[match.teamA] || sentimentMap[match.teamB];
-      const recs = generateMatchRecommendation(match, matchSentiment);
+      // 尝试匹配投注平台的比赛
+      const bettingMatch = bettingMatches.find(bm => 
+        bm.teamA.name.toLowerCase().includes(match.teamA.toLowerCase()) ||
+        bm.teamB.name.toLowerCase().includes(match.teamB.toLowerCase()) ||
+        match.teamA.toLowerCase().includes(bm.teamA.name.toLowerCase()) ||
+        match.teamB.toLowerCase().includes(bm.teamB.name.toLowerCase())
+      );
+      const recs = generateMatchRecommendation(match, matchSentiment, bettingMatch);
       allRecommendations.push(...recs);
     }
   }

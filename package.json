@@ -1,6 +1,6 @@
 {
   "name": "wc26",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "世界杯 2026 零依赖对话式投注账本",
   "scripts": {

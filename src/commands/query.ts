@@ -29,7 +29,7 @@ export function cmdQuery(args: Record<string, string> = {}) {
   console.log(`   当前余额: ${account.balance.toFixed(2)}`);
   console.log(`   总投入: ${totalInvestment.toFixed(2)}`);
   console.log(`   总回报: ${totalReturn.toFixed(2)}`);
-  console.log(`   ROI: ${roi !== null ? `${roi >= 0 ? '+' : ''}${roi.toFixed(1)}%` : 'N/A（无已结算注单）'}`);
+  console.log(`   收益率: ${roi !== null ? `${roi >= 0 ? '+' : ''}${roi.toFixed(1)}%` : 'N/A（无已结算注单）'}`);
   console.log(`   待结算金额: ${account.pendingStake.toFixed(2)}`);
   console.log(`   总赢利: +${account.totalWon.toFixed(2)}`);
   console.log(`   总亏损: -${account.totalLost.toFixed(2)}`);
