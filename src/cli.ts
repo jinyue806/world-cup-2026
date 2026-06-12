@@ -14,6 +14,7 @@ import { cmdStreaks } from './commands/streaks';
 import { cmdExport } from './commands/export';
 import { cmdBacktest } from './commands/backtest';
 import { cmdElo } from './commands/elo';
+import { cmdPreferences } from './commands/preferences';
 
 function cmdHelp() {
   console.log(`
@@ -88,6 +89,11 @@ function cmdHelp() {
   elo                                    ELO 排名查询
     --match <主队> vs <客队>             分析比赛并显示估算赔率
     --team <队名>                        显示指定球队排名
+  prefer                                 用户偏好管理
+    list                                 显示当前偏好设置
+    add <队名>                           添加偏好球队
+    remove <队名>                        移除偏好球队
+    dislike <队名>                       添加不喜欢的球队
   fetch-standings                         从 API 获取最新积分榜
   hot                                     查看热搜（自动从注单提取关键词）
     --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao
@@ -213,6 +219,9 @@ function execCommand(command: string | undefined, named: Record<string, string>,
       break;
     case 'elo':
       cmdElo(named);
+      break;
+    case 'prefer':
+      cmdPreferences(named, positional);
       break;
     case 'help':
     case undefined:
