@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { ensureDataDir } from './lib/storage';
 import { parseArgs, ensureStandingsFresh } from './commands/helpers';
 import { cmdAddBet, cmdDeleteBet, cmdImportBets } from './commands/bet';
@@ -7,16 +5,74 @@ import { cmdUpdateMatch, cmdListMatches, cmdStatus } from './commands/match';
 import { cmdQuery, cmdListBets, cmdStandings, cmdFetchStandings } from './commands/query';
 import { cmdBracket, cmdPredictions, cmdSetGroupStandings, cmdSetBracket } from './commands/bracket';
 import { cmdInit, cmdSettle, cmdDeposit, cmdReset, cmdCheckAndNotify } from './commands/admin';
-import { cmdOdds } from './commands/odds';
-import { cmdAnalytics } from './commands/analytics';
+import { cmdHot } from './commands/hot';
 
 function cmdHelp() {
-  const helpPath = path.join(__dirname, '..', 'references', 'help.txt');
-  try {
-    console.log(fs.readFileSync(helpPath, 'utf-8'));
-  } catch {
-    console.log('⚠️  帮助文件未找到，请参考 references/commands.md');
-  }
+  console.log(`
+⚽ WC26 世界杯投注账本 CLI
+
+用法: npx tsx src/cli.ts <command> [options]
+
+命令:
+  init                                    初始化赛程数据
+  add-bet                                 添加注单
+    --match <matchId>                     比赛ID (如 match_1)
+    --type <1X2|handicap|over_under|correct_score|custom>
+    --selection <选项>                    投注选项
+    --odds <赔率>                         赔率（每注独立）
+    --stake <金额>                        下注金额
+    --handicap <让球值>                   让球玩法必需
+    --threshold <阈值>                    大小球玩法必需
+    --notes <备注>                        可选备注
+
+  update-match                            更新比赛比分
+    --match <matchId>                     比赛ID
+    --score-a <分数>                      主队/Team A 分数
+    --score-b <分数>                      客队/Team B 分数
+    --winner <队名>                       可选，淘汰赛点球/加时胜者
+
+  settle                                  结算所有已完成比赛的注单
+  status                                  查看所有比赛和注单状态
+    --group <Group A>                     按分组筛选
+    --status <finished|scheduled>         按状态筛选
+
+  query                                   查看盈亏统计
+  list-bets                               列出注单
+    --status <pending|won|lost|void>      按状态筛选
+  list-matches                            列出比赛
+    --group <Group A>                     按分组筛选
+    --status <finished|scheduled>         按状态筛选
+
+  deposit <金额>                          设置初始金额
+  delete-bet                              删除注单
+    --id <betId>                          注单ID
+  reset                                   重置所有数据（需确认）
+  standings                               查看小组积分榜
+    --group <Group A>                     分组名
+
+  ── 工具 ──
+  fetch-standings                         从 API 获取最新积分榜
+  hot                                     查看热搜
+    --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao
+    --keyword <关键词>                     过滤关键词（逗号分隔，默认"世界杯"）
+    --no-filter                            不过滤，显示全部热搜
+  import-bets                             批量导入下注记录
+    --text <文本>                          直接粘贴下注文本
+    --file <path>                          从文件读取
+  check-and-notify                        检查比赛结果+结算+生成通知
+
+  ── 淘汰赛 ──
+  bracket                                 查看淘汰赛对阵（占位符已解析）
+  predictions                             查看当前预测数据
+  set-group-standings                     设置小组赛排名
+    --group <Group A>                     分组名
+    --teams <队1,队2,队3,队4>             逗号分隔的排名顺序
+  set-bracket                             设置淘汰赛预测胜者
+    --match <matchId>                     比赛ID (如 match_73)
+    --winner <队名>                       预测胜者
+
+  help                                    显示帮助
+`);
 }
 
 function main() {
@@ -88,11 +144,8 @@ function execCommand(command: string | undefined, named: Record<string, string>,
     case 'fetch-standings':
       cmdFetchStandings().catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
       break;
-    case 'odds':
-      cmdOdds(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
-      break;
-    case 'analytics':
-      cmdAnalytics(named);
+    case 'hot':
+      cmdHot(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
       break;
     case 'import-bets':
       cmdImportBets(named);
