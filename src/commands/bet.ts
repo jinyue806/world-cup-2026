@@ -14,21 +14,51 @@ async function getMatchOdds(match: Match): Promise<{ home: number; draw: number;
   try {
     const bettingMatches = await fetchWorldcupMatches(1, 100);
     
-    // 尝试匹配比赛
+    // 尝试匹配比赛 - 使用更灵活的匹配逻辑
     const bettingMatch = bettingMatches.find(bm => {
-      const homeMatch = bm.teamA.name.toLowerCase().includes(match.teamA.toLowerCase()) ||
-                       match.teamA.toLowerCase().includes(bm.teamA.name.toLowerCase());
-      const awayMatch = bm.teamB.name.toLowerCase().includes(match.teamB.toLowerCase()) ||
-                       match.teamB.toLowerCase().includes(bm.teamB.name.toLowerCase());
-      return homeMatch && awayMatch;
+      const homeTeam = match.teamA.toLowerCase();
+      const awayTeam = match.teamB.toLowerCase();
+      const apiHome = bm.teamA.name.toLowerCase();
+      const apiAway = bm.teamB.name.toLowerCase();
+      
+      // 精确匹配
+      if (apiHome === homeTeam && apiAway === awayTeam) return true;
+      if (apiHome === awayTeam && apiAway === homeTeam) return true;
+      
+      // 包含匹配（处理编码问题和空格）
+      const normalize = (s: string) => s.replace(/\s+/g, '').replace(/[·•]/g, '');
+      const normalizedHome = normalize(homeTeam);
+      const normalizedAway = normalize(awayTeam);
+      const normalizedApiHome = normalize(apiHome);
+      const normalizedApiAway = normalize(apiAway);
+      
+      if (normalizedApiHome === normalizedHome && normalizedApiAway === normalizedAway) return true;
+      if (normalizedApiHome.includes(normalizedHome) || normalizedHome.includes(normalizedApiHome)) {
+        if (normalizedApiAway.includes(normalizedAway) || normalizedAway.includes(normalizedApiAway)) return true;
+      }
+      
+      // 部分匹配（至少匹配一部分队名）
+      const homeWords = homeTeam.split(/\s+/).filter(w => w.length > 1);
+      const awayWords = awayTeam.split(/\s+/).filter(w => w.length > 1);
+      const apiHomeWords = apiHome.split(/\s+/).filter(w => w.length > 1);
+      const apiAwayWords = apiAway.split(/\s+/).filter(w => w.length > 1);
+      
+      const homePartial = homeWords.some(w => apiHomeWords.some(aw => aw.includes(w) || w.includes(aw)));
+      const awayPartial = awayWords.some(w => apiAwayWords.some(aw => aw.includes(w) || w.includes(aw)));
+      
+      return homePartial && awayPartial;
     });
     
     if (bettingMatch) {
       const winMarket = bettingMatch.markets.find(m => m.name === '独赢');
       if (winMarket) {
-        const homeOdds = winMarket.options.find(o => o.name === bettingMatch.teamA.name)?.odds || 0;
-        const drawOdds = winMarket.options.find(o => o.name === '平局')?.odds || 0;
-        const awayOdds = winMarket.options.find(o => o.name === bettingMatch.teamB.name)?.odds || 0;
+        // 获取赔率 - 使用解析后的 options
+        let homeOdds = 0, drawOdds = 0, awayOdds = 0;
+        
+        const options = winMarket.options || [];
+        homeOdds = options.find(o => o.name === bettingMatch.teamA.name)?.odds || 0;
+        drawOdds = options.find(o => o.name === '和' || o.name === '平局')?.odds || 0;
+        awayOdds = options.find(o => o.name === bettingMatch.teamB.name)?.odds || 0;
         
         if (homeOdds > 0 && drawOdds > 0 && awayOdds > 0) {
           return { home: homeOdds, draw: drawOdds, away: awayOdds };
