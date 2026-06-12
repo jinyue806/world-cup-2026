@@ -1,151 +1,108 @@
 # WC26 世界杯投注账本
 
-> 朋友间世界杯娱乐，说一句话就记上。
+> 朋友间世界杯赌球，说一句话就记上。
 
 [![Tests](https://img.shields.io/badge/tests-93%2F93-brightgreen)]()
 [![TypeScript](https://img.shields.io/badge/typescript-5.4-blue)]()
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]()
 
-## 项目简介
+## 你什么时候需要它？
 
-WC26 是一个零依赖的世界杯投注账本。支持对话式交互（OpenClaw/QQ Bot）和命令行（CLI）两种使用方式。
+1. **朋友群赌球**——"记一笔：韩国 vs 捷克，韩国赢，赔率 2.5，下注 100"
+2. **比分更新自动算账**——"韩国 2 - 1 捷克" → 自动结算所有相关注单
+3. **看盈亏**——"看看账本" → 净收益、ROI、胜率一目了然
 
-**核心特性**：
-- 🎯 对话式操作——说一句话就能记账
-- ⚡ 自动结算——比分更新后自动计算盈亏
-- 📊 实时赔率——集成投注平台 API 获取实时赔率
-- 📈 数据分析——多日盈亏趋势、玩法统计、连胜连败追踪
-- 🔒 零依赖——无需安装任何依赖，npx tsx 直接运行
+## 它会交付什么？
+
+- 注单管理（5 种玩法：胜平负/让球/大小球/波胆/自定义）
+- 比分更新后自动结算
+- 盈亏统计 + ROI
+- 积分榜（自动从 API 刷新）
+- 淘汰赛对阵 + 预测
+- 通知文件 `data/notify.json`（供其他 Agent 读取发消息）
 
 ## 快速开始
 
-### 方式一：对话式（推荐）
-
-通过 OpenClaw/QQ Bot 直接对话：
-
-1. 安装 skill：
-```bash
-clawhub install wc26
-```
-
-2. 在 QQ Bot 中说话：
-- "记一笔：韩国 vs 捷克，韩国赢，赔率 2.5，下注 100"
-- "韩国 2 - 1 捷克"
-- "看看盈亏"
-- "分析最近 7 天"
-
-### 方式二：命令行（备选）
-
-```bash
-# 克隆仓库
-git clone https://github.com/jinyue806/world-cup-2026.git
-cd world-cup-2026
-
-# 初始化
-npx tsx src/cli.ts init
-
-# 下注
-npx tsx src/cli.ts add-bet --match "韩国 vs 捷克" --type 1X2 --selection 韩国 --odds 2.5 --stake 100
-```
-
-## 功能特性
-
-### 投注管理
-- 支持 5 种玩法：胜平负(1X2)、让球、大小球、波胆、自定义
-- 支持队名自动匹配（如 `"韩国 vs 捷克"` 自动查找比赛）
-- 已结束比赛下注时自动结算
-- 批量导入下注记录
-
-### 比赛数据
-- 104 场世界杯比赛数据（含小组赛 + 淘汰赛）
-- 实时积分榜（自动从 API 刷新）
-- 淘汰赛对阵 + 预测功能
-
-### 数据分析
-- 每日盈亏统计
-- 按玩法分类统计
-- 连胜/连败追踪
-- ASCII 趋势图可视化
-
-## 技术栈
-
-- **语言**：TypeScript
-- **运行时**：Node.js >= 18
-- **测试**：Vitest（93 个测试用例）
-- **依赖**：零依赖（tsx/vitest 通过 npx 自动获取）
-- **存储**：纯本地 JSON 文件
-
-## 项目结构
+对 AI 说：
 
 ```
-world-cup-2026/
-├── SKILL.md              # AI 指令文件
-├── README.md             # 本文件
-├── LICENSE               # MIT 许可证
-├── package.json          # 项目配置
+> 我要下注世界杯
+✅ 世界杯账本已初始化，104 场比赛已加载。可以开始下注了。
+
+> 韩国赢捷克 100
+✅ 已下注：韩国 vs 捷克，韩国赢，赔率 2.5，金额 100
+
+> 韩国 2-1 捷克
+✅ 比分已更新：韩国 2 - 1 捷克
+🎯 自动结算了 1 注单
+
+> 看看盈亏
+💰 盈亏统计
+   初始金额: 500
+   净收益: +150.00
+   当前余额: 650.00
+   ROI: +150.0%
+```
+
+## 对话示例
+
+| 你说 | Agent 做 |
+|:-----|:---------|
+| 记一笔韩国赢捷克 100 | 查找比赛 → 获取赔率 → 下注 |
+| 巴西赢 200 | 模糊匹配 → 多场则列出候选 → 下注 |
+| 韩国 2-1 捷克 | 更新比分 → 自动结算 |
+| 我赢了多少 | 显示盈亏统计 |
+| 看看 A 组 | 显示小组积分榜 |
+| 今天的热搜 | 获取微博热搜 |
+| 删掉韩国那注 | 删除指定注单 |
+| 我要重置 | 重置所有数据（需确认） |
+
+**你不需要记任何命令，说自然语言就行。**
+
+## 它和同类有什么不同？
+
+| 特性 | wc26 | kicktipp-agent | GoalMine | edgefinder |
+|:---|:---|:---|:---|:---|
+| 零依赖 | ✅ | ❌ | ❌ | ❌ |
+| 对话式 | ✅ | ✅ MCP | WhatsApp | ✅ MCP |
+| 自动结算 | ✅ | ❌ | ❌ | ❌ |
+| 盈亏追踪 | ✅ | ❌ | ❌ | ❌ |
+| 通用账本 | ✅ | ❌ 平台绑定 | ❌ | ❌ |
+| 世界杯聚焦 | ✅ | ❌ | ✅ | ❌ |
+
+## 安全边界
+
+- 不会联网调用外部 API（积分榜自动刷新有 30 分钟缓存，失败时静默回退）
+- 不会删除用户数据（`reset` 命令需要 `--confirm true`）
+- 不会泄露任何信息（纯本地 JSON 存储）
+
+## 文件结构
+
+```
+wc26/
+├── SKILL.md              ← AI 指令（给 Agent 看的）
+├── README.md             ← 人类入口（给你看的）
+├── package.json
 ├── references/
-│   ├── commands.md       # 完整命令参考（CLI 用户）
-│   ├── bet-rules.md      # 结算规则
-│   └── help.txt          # 帮助文本
+│   ├── commands.md       ← 完整命令参考（高级用户）
+│   └── bet-rules.md      ← 结算规则
 └── src/
-    ├── cli.ts            # CLI 路由
-    ├── commands/          # 命令实现
-    ├── lib/              # 核心逻辑
-    ├── types/            # TypeScript 类型定义
-    └── data/             # 赛程数据（init 后生成）
+    ├── cli.ts            ← CLI 路由
+    ├── commands/          ← 命令实现
+    ├── lib/              ← 核心逻辑
+    ├── types/            ← 类型定义
+    └── data/             ← 赛程数据
 ```
 
-## 测试
+## 验证与测试
 
 ```bash
-npx vitest run
+npx vitest run   # 93/93 通过
 ```
 
-## 配置
+## License
 
-### 投注平台 API（可选）
-
-设置环境变量以启用实时赔率功能：
-
-```bash
-# Windows
-set WC26_API_BASE=<your-api-endpoint>
-
-# macOS/Linux
-export WC26_API_BASE=<your-api-endpoint>
-```
-
-## 开发指南
-
-### 代码规范
-
-```bash
-npm run lint      # 代码检查
-npm run format    # 格式化
-```
-
-### 添加新命令
-
-1. 在 `src/commands/` 下创建新文件
-2. 实现命令逻辑
-3. 在 `src/cli.ts` 中注册路由
-4. 添加测试用例
-5. 更新 `references/commands.md`
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 本仓库
-2. 创建特性分支
-3. 提交更改
-4. 推送到分支
-5. 创建 Pull Request
-
-## 许可证
-
-MIT License - 详见 [LICENSE](LICENSE)
+MIT
 
 ---
 
