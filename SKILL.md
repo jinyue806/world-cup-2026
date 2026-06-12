@@ -1,8 +1,8 @@
 ---
 name: wc26
 version: "1.0.0"
-description: "世界杯 2026 零依赖对话式投注账本。朋友间娱乐，说一句话就记上。触发场景：记一笔注单、下注记录、世界杯娱乐、WC26 投注、投注账本、查看盈亏、结算注单、更新比分、删除注单、积分榜、重置数据、导入下注。"
-tags: ["world-cup", "betting", "chatbot", "ledger", "2026", "openclaw"]
+description: "世界杯 2026 零依赖对话式投注账本。朋友间赌球，说一句话就记上。触发场景：记一笔注单、下注记录、世界杯赌球、WC26 投注、投注账本、查看盈亏、结算注单、更新比分、删除注单、积分榜、重置数据、导入下注。不要在讨论赌球文化或新闻时触发。"
+tags: ["world-cup", "betting", "cli", "ledger", "2026"]
 ---
 
 # WC26 世界杯投注账本
@@ -10,22 +10,6 @@ tags: ["world-cup", "betting", "chatbot", "ledger", "2026", "openclaw"]
 > 零部署 · 零依赖 · 对话式 · 自动结算
 
 通过对话管理 2026 世界杯投注。支持 5 种玩法、自动结算、盈亏统计、积分榜。
-
-## 使用方式
-
-### 对话式（推荐）
-
-用户直接说话，Agent 自动执行：
-- "记一笔：韩国 vs 捷克，韩国赢，赔率 2.5，下注 100"
-- "韩国 2 - 1 捷克"
-- "看看盈亏"
-- "分析最近 7 天"
-
-### 命令行（备选）
-
-```bash
-npx tsx src/cli.ts <command>
-```
 
 ## 环境
 
@@ -44,14 +28,33 @@ cd <skill目录> && npx tsx src/cli.ts init
 
 ## 日常操作
 
-### 记一笔
+### 记一笔（简化输入）
 
-用户说："记一笔：韩国 vs 捷克，韩国赢，赔率 2.5，下注 100"
+用户说以下任意形式：
+- "韩国赢捷克 100"
+- "巴西 vs 阿根廷，巴西赢 200"
+- "记一笔韩国赢 50"
+- "下注阿根廷 100"
 
-1. 查比赛 ID：`npx tsx src/cli.ts list-matches --group "Group A"`
-2. 下注：`npx tsx src/cli.ts add-bet --match match_6 --type 1X2 --selection 韩国 --odds 2.5 --stake 100`
+**Agent 自动补全流程**：
 
-中文队名自动映射。已结束比赛下注时自动结算。
+1. 解析用户输入，提取：赢的队伍、对手（可选）、金额
+2. 查找比赛：`npx tsx src/cli.ts list-matches`
+3. 获取赔率：`npx tsx src/cli.ts odds --team <赢的队伍>`
+4. 构造完整命令并执行：
+```bash
+npx tsx src/cli.ts add-bet --match match_6 --type 1X2 --selection 韩国 --odds <从API获取> --stake 100
+```
+
+**关键**：赔率从 API 实时获取，不要让用户手动输入。用户只需说"谁赢 + 金额"。
+
+**简化输入示例**：
+| 用户输入 | Agent 补全 |
+|:---------|:-----------|
+| 韩国赢捷克 100 | match=韩国vs捷克, selection=韩国, odds=从API, stake=100 |
+| 巴西赢 200 | match=巴西vs?, selection=巴西, odds=从API, stake=200 |
+| 记一笔韩国赢 50 | 同上 |
+| 下注阿根廷 100 | 同上 |
 
 ### 批量导入
 
