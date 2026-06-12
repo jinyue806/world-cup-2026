@@ -94,6 +94,7 @@ function cmdHelp() {
     add <队名>                           添加偏好球队
     remove <队名>                        移除偏好球队
     dislike <队名>                       添加不喜欢的球队
+    mode <strict|balanced|relaxed|off>   设置拷问模式
   fetch-standings                         从 API 获取最新积分榜
   hot                                     查看热搜（自动从注单提取关键词）
     --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao

@@ -1,7 +1,7 @@
 /**
  * WC26 用户偏好模块
  *
- * 职责：管理用户的偏好球队设置，用于热搜权重排序。
+ * 职责：管理用户的偏好球队设置和 AI 主动拷问模式。
  */
 
 import fs from 'fs';
@@ -9,9 +9,13 @@ import path from 'path';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
+export type ProactiveMode = 'strict' | 'balanced' | 'relaxed' | 'off';
+
 export interface UserPreferences {
   favoriteTeams: string[];
   dislikedTeams: string[];
+  proactiveMode: ProactiveMode;
+  bettingLimit?: number; // 单注上限（占本金百分比）
   createdAt: string;
   updatedAt: string;
 }
@@ -22,6 +26,7 @@ const PREFERENCES_PATH = path.join(process.cwd(), 'data', 'preferences.json');
 const DEFAULT_PREFERENCES: UserPreferences = {
   favoriteTeams: [],
   dislikedTeams: [],
+  proactiveMode: 'balanced',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -51,6 +56,49 @@ export function savePreferences(prefs: UserPreferences): void {
   const tmpPath = `${PREFERENCES_PATH}.tmp`;
   fs.writeFileSync(tmpPath, JSON.stringify(prefs, null, 2));
   fs.renameSync(tmpPath, PREFERENCES_PATH);
+}
+
+/**
+ * 设置 AI 主动拷问模式
+ */
+export function setProactiveMode(mode: ProactiveMode): void {
+  const prefs = loadPreferences();
+  prefs.proactiveMode = mode;
+  savePreferences(prefs);
+}
+
+/**
+ * 获取当前 AI 主动拷问模式
+ */
+export function getProactiveMode(): ProactiveMode {
+  const prefs = loadPreferences();
+  return prefs.proactiveMode || 'balanced';
+}
+
+/**
+ * 检查是否应该拷问
+ */
+export function shouldGrill(context: 'bet' | 'query' | 'recommend' | 'risk' | 'preference' | 'cooling'): boolean {
+  const mode = getProactiveMode();
+  
+  if (mode === 'off') return false;
+  
+  switch (context) {
+    case 'bet':
+      return mode === 'strict' || mode === 'balanced';
+    case 'query':
+      return mode === 'strict';
+    case 'recommend':
+      return mode === 'strict' || mode === 'balanced';
+    case 'risk':
+      return mode !== 'off'; // 风险预警始终触发
+    case 'preference':
+      return mode === 'strict' || mode === 'balanced';
+    case 'cooling':
+      return mode !== 'off'; // 冷静期始终触发
+    default:
+      return false;
+  }
 }
 
 /**
@@ -140,6 +188,14 @@ export function formatPreferences(prefs: UserPreferences): string {
   if (prefs.dislikedTeams.length > 0) {
     lines.push(`   不喜欢: ${prefs.dislikedTeams.join(', ')}`);
   }
+  
+  const modeNames: Record<ProactiveMode, string> = {
+    'strict': '🎯 严格模式',
+    'balanced': '⚖️ 平衡模式',
+    'relaxed': '😎 轻松模式',
+    'off': '🙅 关闭模式',
+  };
+  lines.push(`   拷问模式: ${modeNames[prefs.proactiveMode]}`);
   
   lines.push(`   更新时间: ${prefs.updatedAt.slice(0, 16)}`);
   
