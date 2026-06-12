@@ -1,0 +1,12 @@
+node_modules/
+package-lock.json
+dist/
+.test-tmp/
+data/bets.json
+data/matches.json
+data/predictions.json
+data/config.json
+data/settings.json
+data/.locks/
+data/notify.json
+*.tmp
