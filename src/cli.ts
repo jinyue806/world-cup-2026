@@ -52,10 +52,10 @@ function cmdHelp() {
 
   ── 工具 ──
   fetch-standings                         从 API 获取最新积分榜
-  hot                                     查看热搜
+  hot                                     查看热搜（自动从注单提取关键词）
     --platform <平台>                      weibo/zhihu/douyin/baidu/bilibili/toutiao
-    --keyword <关键词>                     过滤关键词（逗号分隔，默认"世界杯"）
-    --no-filter                            不过滤，显示全部热搜
+    --keyword <关键词>                     追加自定义关键词（逗号分隔）
+    --no-auto                              不自动提取注单关键词
   import-bets                             批量导入下注记录
     --text <文本>                          直接粘贴下注文本
     --file <path>                          从文件读取
