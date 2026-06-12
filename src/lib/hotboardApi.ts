@@ -1,14 +1,18 @@
 /**
  * WC26 热搜 API 客户端
  *
- * 数据源：uapis.cn（免费，无需 API key）
+ * 数据源：uapis.cn
  * API：GET /api/v1/misc/hotboard
  *
  * 职责：获取各平台热搜数据。
  * 支持 40+ 平台：weibo、zhihu、douyin、bilibili、baidu、toutiao 等。
+ *
+ * 认证：设置环境变量 UAPI_KEY 以追踪调用量。
+ * export UAPI_KEY=uapi-a-xxxxx
  */
 
 const API_BASE = 'https://uapis.cn/api/v1/misc';
+const API_KEY = process.env.UAPI_KEY || '';
 
 export type HotPlatform = string;
 
@@ -31,7 +35,11 @@ interface HotboardResponse {
  */
 export async function fetchHotboard(platform: string = 'weibo'): Promise<HotboardResponse> {
   const url = `${API_BASE}/hotboard?type=${platform}`;
-  const res = await fetch(url);
+  const headers: Record<string, string> = {};
+  if (API_KEY) {
+    headers['X-API-Key'] = API_KEY;
+  }
+  const res = await fetch(url, { headers });
 
   if (!res.ok) {
     throw new Error(`热搜 API 请求失败: ${res.status}`);
@@ -56,7 +64,11 @@ export async function searchHotboard(
   limit = 50
 ): Promise<any> {
   const url = `${API_BASE}/hotboard?type=${platform}&keyword=${encodeURIComponent(keyword)}&time_start=${timeStart}&time_end=${timeEnd}&limit=${limit}`;
-  const res = await fetch(url);
+  const headers: Record<string, string> = {};
+  if (API_KEY) {
+    headers['X-API-Key'] = API_KEY;
+  }
+  const res = await fetch(url, { headers });
 
   if (!res.ok) {
     throw new Error(`热搜搜索 API 请求失败: ${res.status}`);
