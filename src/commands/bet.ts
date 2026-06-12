@@ -4,20 +4,55 @@ import { teamZhName } from '../lib/parser';
 import { parseMultiBets } from '../lib/parser';
 import { Match, Bet, BetType } from '../types';
 import { genId, findMatchById, resolveTeamForBet, findMatchByTeamName, parseMatchDescription } from './helpers';
+import { fetchWorldcupMatches, type BettingMatch } from '../lib/bettingApi';
 import fs from 'fs';
 
-export function cmdAddBet(args: Record<string, string>) {
+/**
+ * 从投注平台 API 获取比赛赔率
+ */
+async function getMatchOdds(match: Match): Promise<{ home: number; draw: number; away: number } | null> {
+  try {
+    const bettingMatches = await fetchWorldcupMatches(1, 100);
+    
+    // 尝试匹配比赛
+    const bettingMatch = bettingMatches.find(bm => {
+      const homeMatch = bm.teamA.name.toLowerCase().includes(match.teamA.toLowerCase()) ||
+                       match.teamA.toLowerCase().includes(bm.teamA.name.toLowerCase());
+      const awayMatch = bm.teamB.name.toLowerCase().includes(match.teamB.toLowerCase()) ||
+                       match.teamB.toLowerCase().includes(bm.teamB.name.toLowerCase());
+      return homeMatch && awayMatch;
+    });
+    
+    if (bettingMatch) {
+      const winMarket = bettingMatch.markets.find(m => m.name === '独赢');
+      if (winMarket) {
+        const homeOdds = winMarket.options.find(o => o.name === bettingMatch.teamA.name)?.odds || 0;
+        const drawOdds = winMarket.options.find(o => o.name === '平局')?.odds || 0;
+        const awayOdds = winMarket.options.find(o => o.name === bettingMatch.teamB.name)?.odds || 0;
+        
+        if (homeOdds > 0 && drawOdds > 0 && awayOdds > 0) {
+          return { home: homeOdds, draw: drawOdds, away: awayOdds };
+        }
+      }
+    }
+  } catch (e) {
+    // API 获取失败时静默返回 null
+  }
+  return null;
+}
+
+export async function cmdAddBet(args: Record<string, string>) {
   let matchId = args.match;
   const betType = args.type as BetType;
   let selection = args.selection;
-  const odds = parseFloat(args.odds);
+  let odds = parseFloat(args.odds);
   const stake = parseFloat(args.stake);
   const bettorId = args.bettor || undefined;
 
-  if (!betType || !selection || isNaN(odds) || isNaN(stake)) {
-    console.error('❌ 用法: add-bet --match <matchId> --type <1X2|handicap|over_under|correct_score|custom> --selection <选项> --odds <赔率> --stake <金额> [--bettor <名字>]');
-    console.error('   示例: add-bet --match match_1 --type 1X2 --selection France --odds 1.8 --stake 100');
-    console.error('   或:   add-bet --match "韩国 vs 捷克" --type 1X2 --selection 韩国 --odds 2.5 --stake 100 --bettor 小明');
+  if (!betType || !selection || isNaN(stake)) {
+    console.error('❌ 用法: add-bet --match <matchId> --type <1X2|handicap|over_under|correct_score|custom> --selection <选项> --stake <金额> [--odds <赔率>] [--bettor <名字>]');
+    console.error('   示例: add-bet --match match_1 --type 1X2 --selection 墨西哥 --stake 100');
+    console.error('   或:   add-bet --match "韩国 vs 捷克" --type 1X2 --selection 韩国 --stake 100');
     process.exit(1);
   }
 
@@ -47,7 +82,8 @@ export function cmdAddBet(args: Record<string, string>) {
   }
 
   if (!matchId) {
-    console.error('❌ 用法: add-bet --match <matchId> --type <玩法> --selection <选项> --odds <赔率> --stake <金额>');
+    console.error('❌ 用法: add-bet --match <matchId> --type <玩法> --selection <选项> --stake <金额>');
+    console.error('   示例: add-bet --match match_1 --type 1X2 --selection 墨西哥 --stake 100');
     process.exit(1);
   }
 
@@ -55,6 +91,41 @@ export function cmdAddBet(args: Record<string, string>) {
   if (!match) {
     console.error(`❌ 找不到比赛: ${matchId}`);
     process.exit(1);
+  }
+
+  // 如果没有提供赔率，尝试从 API 自动获取
+  if (isNaN(odds) || odds === 0) {
+    console.log('🔄 正在获取赔率...');
+    const apiOdds = await getMatchOdds(match);
+    if (apiOdds) {
+      // 根据选择确定赔率
+      const selectionLower = selection.toLowerCase();
+      if (selectionLower === 'draw' || selectionLower === '平' || selectionLower === '平局') {
+        odds = apiOdds.draw;
+      } else if (selectionLower === match.teamA.toLowerCase() || selectionLower === '1' || selectionLower === '主') {
+        odds = apiOdds.home;
+      } else if (selectionLower === match.teamB.toLowerCase() || selectionLower === '2' || selectionLower === '客') {
+        odds = apiOdds.away;
+      } else {
+        odds = apiOdds.home; // 默认使用主队赔率
+      }
+      console.log(`✅ 已获取赔率: ${odds}`);
+    } else {
+      // API 获取失败，使用 ELO 估算
+      const { analyzeMatch } = require('../lib/eloRating');
+      const eloMatch = analyzeMatch(match.teamA, match.teamB);
+      const selectionLower = selection.toLowerCase();
+      if (selectionLower === 'draw' || selectionLower === '平' || selectionLower === '平局') {
+        odds = eloMatch.estimatedOdds.draw;
+      } else if (selectionLower === match.teamA.toLowerCase() || selectionLower === '1' || selectionLower === '主') {
+        odds = eloMatch.estimatedOdds.home;
+      } else if (selectionLower === match.teamB.toLowerCase() || selectionLower === '2' || selectionLower === '客') {
+        odds = eloMatch.estimatedOdds.away;
+      } else {
+        odds = eloMatch.estimatedOdds.home;
+      }
+      console.log(`✅ 使用ELO估算赔率: ${odds}`);
+    }
   }
 
   const resolvedSelection = resolveTeamForBet(match, selection);

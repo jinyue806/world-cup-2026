@@ -134,7 +134,7 @@ function execCommand(command: string | undefined, named: Record<string, string>,
       cmdInit();
       break;
     case 'add-bet':
-      cmdAddBet(named);
+      cmdAddBet(named).catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
       break;
     case 'update-match':
       cmdUpdateMatch(named);
