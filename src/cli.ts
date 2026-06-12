@@ -17,7 +17,7 @@ import { cmdElo } from './commands/elo';
 
 function cmdHelp() {
   console.log(`
-⚽ WC26 世界杯投注账本 CLI
+⚽ 2026世界杯投注账本 CLI
 
 用法: npx tsx src/cli.ts <command> [options]
 

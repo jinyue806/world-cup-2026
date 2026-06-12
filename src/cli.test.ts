@@ -159,7 +159,7 @@ describe('query', () => {
     run('update-match --match match_6 --score-a 2 --score-b 1');
     const out = run('query');
     expect(out).toContain('净收益: +100.00');
-    expect(out).toContain('ROI: +100.0%');
+    expect(out).toContain('收益率: +100.0%');
   });
 
   it('calculates loss correctly', () => {
@@ -286,7 +286,7 @@ describe('full integration', () => {
 describe('help', () => {
   it('shows help text', () => {
     const out = run('help');
-    expect(out).toContain('WC26');
+    expect(out).toContain('2026世界杯');
     expect(out).toContain('add-bet');
     expect(out).toContain('update-match');
   });
