@@ -1,16 +1,16 @@
 /**
  * WC26 热搜 API 客户端
  *
- * 数据源：uapis.cn
+ * 数据源：uapis.cn（免费，无需 API key）
  * API：GET /api/v1/misc/hotboard
  *
- * 职责：获取各平台热搜数据，支持关键词过滤。
+ * 职责：获取各平台热搜数据。
+ * 支持 40+ 平台：weibo、zhihu、douyin、bilibili、baidu、toutiao 等。
  */
 
 const API_BASE = 'https://uapis.cn/api/v1/misc';
-const API_KEY = process.env.UAPI_KEY || 'uapi-a-z3xb2sP0mKY7EJaMRd26AilT3mv56MKr4GTSSq';
 
-export type HotPlatform = 'weibo' | 'zhihu' | 'douyin' | 'baidu' | 'bilibili' | 'toutiao';
+export type HotPlatform = string;
 
 export interface HotItem {
   index: number;
@@ -27,20 +27,18 @@ interface HotboardResponse {
 }
 
 /**
- * 获取热搜数据
+ * 获取热搜数据（默认模式：实时热搜）
  */
-export async function fetchHotboard(platform: HotPlatform = 'weibo'): Promise<HotboardResponse> {
+export async function fetchHotboard(platform: string = 'weibo'): Promise<HotboardResponse> {
   const url = `${API_BASE}/hotboard?type=${platform}`;
-  const res = await fetch(url, {
-    headers: { 'X-API-Key': API_KEY },
-  });
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new Error(`热搜 API 请求失败: ${res.status}`);
   }
 
   const json = await res.json() as any;
-  if (json.code && json.code !== 'SUCCESS') {
+  if (json.code && json.code !== 'SUCCESS' && json.code !== '0') {
     throw new Error(`热搜 API 错误: ${json.message || json.code}`);
   }
 
@@ -48,33 +46,41 @@ export async function fetchHotboard(platform: HotPlatform = 'weibo'): Promise<Ho
 }
 
 /**
- * 按关键词过滤热搜
+ * 搜索历史热搜（搜索模式）
  */
-export function filterByKeywords(items: HotItem[], keywords: string[]): HotItem[] {
-  if (keywords.length === 0) return items;
+export async function searchHotboard(
+  platform: string,
+  keyword: string,
+  timeStart: number,
+  timeEnd: number,
+  limit = 50
+): Promise<any> {
+  const url = `${API_BASE}/hotboard?type=${platform}&keyword=${encodeURIComponent(keyword)}&time_start=${timeStart}&time_end=${timeEnd}&limit=${limit}`;
+  const res = await fetch(url);
 
-  const lowerKeywords = keywords.map(k => k.toLowerCase());
-  return items.filter(item => {
-    const title = item.title.toLowerCase();
-    return lowerKeywords.some(kw => title.includes(kw));
-  });
+  if (!res.ok) {
+    throw new Error(`热搜搜索 API 请求失败: ${res.status}`);
+  }
+
+  const json = await res.json() as any;
+  if (json.code && json.code !== 'SUCCESS' && json.code !== '0') {
+    throw new Error(`热搜搜索 API 错误: ${json.message || json.code}`);
+  }
+
+  return json;
 }
 
 /**
  * 格式化热搜输出
  */
-export function formatHotboard(items: HotItem[], platform: string, keywords: string[]): string {
+export function formatHotboard(items: HotItem[], platform: string): string {
   const lines: string[] = [];
 
-  lines.push(`🔥 ${platform.toUpperCase()} 热搜`);
-  if (keywords.length > 0) {
-    lines.push(`   关键词: ${keywords.join(', ')}`);
-  }
-  lines.push(`   更新时间: ${new Date().toLocaleString('zh-CN')}`);
+  lines.push(`🔥 ${platform} 热搜`);
   lines.push('');
 
   if (items.length === 0) {
-    lines.push('   未找到匹配的热搜');
+    lines.push('   无数据');
     return lines.join('\n');
   }
 

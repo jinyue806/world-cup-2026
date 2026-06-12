@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchHotboard, filterByKeywords, formatHotboard } from './hotboardApi';
+import { fetchHotboard, formatHotboard } from './hotboardApi';
 
 beforeEach(() => {
   vi.restoreAllMocks();
@@ -38,39 +38,16 @@ describe('fetchHotboard', () => {
   });
 });
 
-describe('filterByKeywords', () => {
-  it('filters by single keyword', () => {
-    const result = filterByKeywords(sampleData.list, ['世界杯']);
-    expect(result).toHaveLength(1);
-    expect(result[0].title).toContain('世界杯');
-  });
-
-  it('filters by multiple keywords', () => {
-    const result = filterByKeywords(sampleData.list, ['世界杯', '梅西']);
-    expect(result).toHaveLength(2);
-  });
-
-  it('returns all items when keywords empty', () => {
-    const result = filterByKeywords(sampleData.list, []);
-    expect(result).toHaveLength(3);
-  });
-
-  it('is case insensitive', () => {
-    const result = filterByKeywords(sampleData.list, ['世界杯']);
-    expect(result).toHaveLength(1);
-  });
-});
-
 describe('formatHotboard', () => {
   it('formats output correctly', () => {
-    const output = formatHotboard(sampleData.list, 'weibo', ['世界杯']);
-    expect(output).toContain('WEIBO 热搜');
-    expect(output).toContain('关键词: 世界杯');
+    const output = formatHotboard(sampleData.list, 'weibo');
+    expect(output).toContain('weibo 热搜');
     expect(output).toContain('世界杯在中国的收视率爆了');
+    expect(output).toContain('117.9万');
   });
 
-  it('shows no match message when empty', () => {
-    const output = formatHotboard([], 'weibo', ['世界杯']);
-    expect(output).toContain('未找到匹配的热搜');
+  it('shows no data message when empty', () => {
+    const output = formatHotboard([], 'weibo');
+    expect(output).toContain('无数据');
   });
 });
