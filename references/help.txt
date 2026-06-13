@@ -45,6 +45,7 @@
   hot                                     查看热搜
     --platform <平台>                     平台 (weibo/baidu/douyin/zhihu/bilibili)
     --no-auto                             关闭偏好权重排序
+    --match <matchId>                     按比赛搜索（提取队名作为关键词）
   odds                                    查看实时赔率
     --detail                              显示详细赔率（含所有盘口）
     --match <matchId>                     显示指定比赛的详细赔率
