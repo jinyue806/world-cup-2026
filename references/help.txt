@@ -1,4 +1,4 @@
-⚽ WC26 世界杯投注账本 CLI
+⚽ 2026世界杯投注账本 CLI
 
 用法: npx tsx src/cli.ts <command> [options]
 
@@ -42,6 +42,9 @@
 
   ── 工具 ──
   fetch-standings                         从 API 获取最新积分榜
+  hot                                     查看热搜
+    --platform <平台>                     平台 (weibo/baidu/douyin/zhihu/bilibili)
+    --no-auto                             关闭偏好权重排序
   odds                                    查看实时赔率
     --detail                              显示详细赔率（含所有盘口）
     --match <matchId>                     显示指定比赛的详细赔率
@@ -49,6 +52,25 @@
   analytics                               数据分析报告
     --days <N>                            最近 N 天
     --type <玩法>                          按玩法筛选 (1X2|handicap|over_under)
+  sentiment                               社交媒体情绪分析
+    --team <队名>                         指定球队
+  recommend                               AI 投注推荐
+    --team <队名>                         指定球队
+  streaks                                 连胜/连败统计
+    --notify                              显示通知格式
+  export                                  导出报表
+    --format csv|json                     导出格式
+    --bettor <名字>                       按用户导出
+    --status <won|lost|pending>           按状态筛选
+  backtest                                回测历史数据
+    --year <年份>                         指定年份
+    --strategy <策略名>                   回测策略
+    --list                                列出可用策略
+  elo                                     查看 ELO 球队排名
+    --match <matchId>                     显示指定比赛 ELO 数据
+    --team <队名>                         显示指定球队 ELO 排名
+  prefer                                  管理用户偏好
+    <list|add|remove> <队名>              操作
   import-bets                             批量导入下注记录
     --text <文本>                          直接粘贴下注文本
     --file <path>                          从文件读取

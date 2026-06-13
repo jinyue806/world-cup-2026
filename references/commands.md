@@ -55,9 +55,17 @@
 | `streaks` | `[--notify]` | 连胜/连败统计 |
 | `export` | `[--format csv\|json] [--bettor <名字>] [--status <状态>]` | 导出报表 |
 | `backtest` | `[--year <年份>] [--strategy <策略名>] [--list]` | 回测历史数据 |
+| `elo` | `[--match <比赛ID>] [--team <队名>]` | 查看 ELO 球队排名 |
 | `fetch-standings` | — | 从 API 获取最新积分榜 |
 | `import-bets` | `--text <文本>` / `--file <path>` | 批量导入下注记录 |
 | `check-and-notify` | — | 检查比赛结果+结算+生成通知 |
+
+## 热搜 & 偏好
+
+| 命令 | 参数 | 说明 |
+|:-----|:-----|:-----|
+| `hot` | `[--platform <平台>] [--no-auto]` | 查看热搜（支持微博/百度/抖音等） |
+| `prefer` | `<list\|add\|remove> <队名>` | 管理用户偏好球队 |
 
 ## 淘汰赛
 
