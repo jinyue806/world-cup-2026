@@ -20,7 +20,7 @@ export function settleBet(bet: Bet, match: Match): BetStatus {
       const teamALower = match.teamA.toLowerCase().trim();
       const teamBLower = match.teamB.toLowerCase().trim();
 
-      if (selection === 'draw' || selection === 'x' || selection === '平' || selection === '平局') {
+      if (selection === 'draw' || selection === 'x' || selection === '平' || selection === '平局' || selection === '和') {
         return scoreA === scoreB ? 'won' : 'lost';
       }
       if (selection === teamALower || selection === '1' || selection === '主胜') {

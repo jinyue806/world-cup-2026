@@ -9,4 +9,6 @@ data/config.json
 data/settings.json
 data/.locks/
 data/notify.json
+data/preferences.json
+data/export_*.csv
 *.tmp
